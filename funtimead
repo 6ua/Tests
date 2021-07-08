@@ -1,0 +1,176 @@
+-- // Autofarm
+spawn(
+function()
+  while wait() do
+    if Autofarm then
+      if Position == "Over" then
+        for _, v in next, workspace.Folders.Monsters:GetDescendants() do
+          if v.Name == "Head" then
+            tweenService, tweenInfo =
+            game:GetService("TweenService"),
+            TweenInfo.new(Speed, Enum.EasingStyle.Linear)
+            tweenService:Create(
+            game:GetService("Players")["LocalPlayer"].Character.HumanoidRootPart,
+            tweenInfo,
+            {
+              CFrame = CFrame.new(v.Position - Vector3.new(0, 0, 0)) *
+              CFrame.Angles(math.rad(-90), 0, 0)
+            }
+            ):Play()
+            for AttackNumber = 1, 4 do
+              game:GetService("ReplicatedStorage").RemoteEvents.MainRemoteEvent:FireServer(
+              "UseSkill",
+              {
+                ["hrpCFrame"] = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame,
+                ["attackNumber"] = AttackNumber
+              },
+              "BasicAttack"
+              )
+            end
+            if Position == "Under" then
+              for _, v in next, workspace.Folders.Monsters:GetDescendants() do
+                if v.Name == "Head" then
+                  tweenService, tweenInfo =
+                  game:GetService("TweenService"),
+                  TweenInfo.new(Speed, Enum.EasingStyle.Linear)
+                  tweenService:Create(
+                  game:GetService("Players")["LocalPlayer"].Character.HumanoidRootPart,
+                  tweenInfo,
+                  {
+                    CFrame = CFrame.new(v.Position - Vector3.new(0, 17, 0)) *
+                    CFrame.Angles(math.rad(90), 0, 0)
+                  }
+                  ):Play()
+                  for AttackNumber = 1, 4 do
+                    game:GetService("ReplicatedStorage").RemoteEvents.MainRemoteEvent:FireServer(
+                    "UseSkill",
+                    {
+                      ["hrpCFrame"] = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame,
+                      ["attackNumber"] = AttackNumber
+                    },
+                    "BasicAttack"
+                    )
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end
+)
+
+-- // Auto Skills
+
+spawn(
+function()
+  while wait() do
+    if AutoSkills then
+      for _, v in next, getconnections(
+      game:GetService("Players").LocalPlayer.PlayerGui.UniversalGui.UniversalCenterUIFrame.SlotsHolder.Skill1.MouseButton1Click
+      ) do -- Skill 1
+        v:Fire()
+      end
+
+      for _, v in next, getconnections(
+      game:GetService("Players").LocalPlayer.PlayerGui.UniversalGui.UniversalCenterUIFrame.SlotsHolder.Skill2.MouseButton1Click
+      ) do --Skill 2
+        v:Fire()
+      end
+
+      for _, v in next, getconnections(
+      game:GetService("Players").LocalPlayer.PlayerGui.UniversalGui.UniversalCenterUIFrame.SlotsHolder.Skill3.MouseButton1Click
+      ) do -- Skill 3
+        v:Fire()
+      end
+
+      for _, v in next, getconnections(
+      game:GetService("Players").LocalPlayer.PlayerGui.UniversalGui.UniversalCenterUIFrame.SlotsHolder.Skill4.MouseButton1Click
+      ) do -- Skill 4
+        v:Fire()
+      end
+    end
+  end
+end
+)
+
+-- // Dimension Config
+spawn(
+function()
+  while wait() do
+    if AutoDimension then
+      game:GetService("ReplicatedStorage").RemoteFunctions.MainRemoteFunction:InvokeServer(
+      "CreateRoom",
+      {
+        ["Difficulty"] = Difficulty,
+        ["FriendsOnly"] = FriendOnly,
+        ["MapName"] = Dimension,
+        ["Hardcore"] = Hardcore
+      }
+      )
+      game:GetService("ReplicatedStorage").RemoteFunctions.MainRemoteFunction:InvokeServer("TeleportPlayers")
+    end
+  end
+end
+)
+
+--Auto Retry
+spawn(
+function()
+  while wait() do
+    if AutoRetry == true then
+      game:GetService("ReplicatedStorage").RemoteEvents.MainRemoteEvent:FireServer("RetryDungeon")
+    end
+  end
+end
+)
+
+-- // AntiAfk
+spawn(
+function()
+  if AntiAfk == true then
+    local vu = game:GetService("VirtualUser")
+    game:GetService("Players").LocalPlayer.Idled:connect(
+    function()
+      vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+      wait(1)
+      vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+    end
+    )
+  end
+end
+)
+
+-- // No Clip
+spawn(
+function()
+  if Noclip == true then
+    game:GetService("RunService").Heartbeat:connect(
+    function()
+      game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(11)
+    end
+    )
+  end
+end
+)
+
+-- // Hide Name
+spawn(
+function()
+  while wait() do
+    if HideName == true then
+      game:GetService("Workspace").Folders.Players[game.Players.LocalPlayer.Name].Head.PlayerHealthBarGui:remove(
+
+      )
+    end
+  end
+end
+)
+
+-- // Other Stuff
+while wait(30) do
+  print("https://discord.gg/7nEtPcHFDX")
+  setclipboard("https://discord.gg/7nEtPcHFDX")
+end
